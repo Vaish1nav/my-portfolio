@@ -46,7 +46,7 @@ export default function ContactSection() {
     { label: '📧 EMAIL ME',   href: 'mailto:vaishnavsudha2003@gmail.com', bg: '#F5C400', color: '#1A1A1A', shadow: '#a88a00' },
     { label: '🐙 GITHUB',     href: 'https://github.com/Vaish1nav',                      bg: 'transparent', color: '#F0E6CC', shadow: '#222' },
     { label: '💼 LINKEDIN',   href: 'https://linkedin.com/in/vaishnav-s-7ab082299',      bg: 'transparent', color: '#F0E6CC', shadow: '#222' },
-    { label: '📄 RESUME PDF', href: '/resume.pdf',                                        bg: '#E8611A',     color: 'white',   shadow: '#9a3d0e' },
+    { label: '📄 RESUME PDF', href: 'Vaishnav_resume.pdf',                                        bg: '#E8611A',     color: 'white',   shadow: '#9a3d0e' },
   ].map(btn => (
     <motion.a
       key={btn.label}
