@@ -1,65 +1,167 @@
-import Image from "next/image";
+'use client'
+import { useState, useEffect } from 'react'
+import Nav from './components/Nav'
+import ProfileCard from './components/ProfileCard'
+import HelloCard from './components/HelloCard'
+import EducationCard from './components/EducationCard'
+import SkillsSection from './components/SkillsSection'
+import ProjectsSection from './components/ProjectsSection'
+import ContactSection from './components/ContactSection'
+
+const bootLines = [
+  'BIOS v2.4.1 ............. OK',
+  'Loading VAISHNAV.EXE .....',
+  'Checking Python .......... OK',
+  'Checking SQL ............. OK',
+  'Checking Power BI ........ OK',
+  'Mounting portfolio ....... OK',
+  'BOOT COMPLETE ✓'
+]
 
 export default function Home() {
+  const [booting, setBooting] = useState(true)
+  const [currentLine, setCurrentLine] = useState(0)
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    if (currentLine < bootLines.length) {
+      const timer = setTimeout(() => {
+        setCurrentLine(prev => prev + 1)
+        setProgress(((currentLine + 1) / bootLines.length) * 100)
+      }, 350)
+      return () => clearTimeout(timer)
+    } else {
+      const timer = setTimeout(() => setBooting(false), 400)
+      return () => clearTimeout(timer)
+    }
+  }, [currentLine])
+
+  if (booting) {
+    return (
+      <div style={{
+        position: 'fixed', inset: 0,
+        background: '#1A1A1A',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 99999,
+        gap: '12px'
+      }}>
+        {/* Logo */}
+        <div style={{
+          fontFamily: 'monospace',
+          fontSize: '28px',
+          color: '#F5C400',
+          letterSpacing: '4px',
+          marginBottom: '24px',
+          fontWeight: 'bold'
+        }}>
+          Mr. V
+        </div>
+
+        {/* Boot lines */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '6px',
+          width: '340px'
+        }}>
+          {bootLines.slice(0, currentLine).map((line, i) => (
+            <div key={i} style={{
+              fontFamily: 'monospace',
+              fontSize: '14px',
+              color: i === currentLine - 1 ? '#4ade80' : '#888',
+              letterSpacing: '1px',
+              transition: 'color 0.3s'
+            }}>
+              {line}
+            </div>
+          ))}
+        </div>
+
+        {/* Progress bar */}
+        <div style={{
+          width: '340px',
+          height: '12px',
+          background: '#333',
+          borderRadius: '4px',
+          border: '2px solid #F5C400',
+          marginTop: '16px',
+          overflow: 'hidden'
+        }}>
+          <div style={{
+            height: '100%',
+            width: `${progress}%`,
+            background: '#F5C400',
+            borderRadius: '2px',
+            transition: 'width 0.3s ease'
+          }}/>
+        </div>
+
+        {/* Percentage */}
+        <div style={{
+          fontFamily: 'monospace',
+          fontSize: '13px',
+          color: '#F5C400',
+          letterSpacing: '2px'
+        }}>
+          {Math.round(progress)}%
+        </div>
+
+        {/* Blinking cursor */}
+        <div style={{
+          fontFamily: 'monospace',
+          fontSize: '20px',
+          color: '#4ade80',
+          animation: 'blink 1s infinite'
+        }}>
+          █
+        </div>
+
+        <style>{`
+          @keyframes blink {
+            0%, 100% { opacity: 1 }
+            50% { opacity: 0 }
+          }
+        `}</style>
+      </div>
+    )
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main style={{
+      backgroundImage: 'url(/bg.gif)',
+      backgroundSize: 'cover',
+      backgroundRepeat: 'repeat',
+      backgroundAttachment: 'fixed',
+      minHeight: '100vh',
+      animation: 'fadeIn 0.8s ease-in-out',
+    }}>
+      <style>{`
+        @keyframes fadeIn {
+          0%   { opacity: 0; transform: scale(0.98); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+      `}</style>
+      <Nav />
+      <div style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: '64px 16px 40px',
+        display: 'grid',
+        gridTemplateColumns: '340px 1fr',
+        gap: '16px'
+      }}>
+        <ProfileCard />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <HelloCard />
+          <EducationCard />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+        <SkillsSection />
+        <ProjectsSection />
+        <ContactSection />
+      </div>
+    </main>
+  )
 }
